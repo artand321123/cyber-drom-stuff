@@ -100,14 +100,14 @@ class FlyerDrone(P):
         self.disarm()
         print("LANDED")
     
-    def fly_around(self):
+    def fly_around(self, count = -1):
         """
         Полёт зигзагом по полю для поиска грузов
         """
         print("FLYING AROUND")
         edge_x = int(self.position[0])
 
-        while True:
+        while count != 0:
             self.goto(-edge_x, self.position[1], self.height, 0)
             print("GOING TO", -edge_x, self.position[1])
             while round(self.position[0]) != -edge_x:
@@ -122,6 +122,7 @@ class FlyerDrone(P):
             print("GOING TO", -edge_x, self.position[1] + (DRONE_STEP if self.side == True else -DRONE_STEP))
             time.sleep(5)
             edge_x = -edge_x
+            count -= 1
 
     def aruco_detector(self):
         """
@@ -142,8 +143,8 @@ class FlyerDrone(P):
                 if ids is not None and ids[0][0] not in detected_ids:
                     frame = aruco.drawDetectedMarkers(frame, corners, ids)
                     detected_ids.append(ids[0][0])
-                    print('BARCODE SPOTTED:', corners, '-', ids[0][0])
-                    cv2.imshow(f'ARUCO SPOTTED: {ids[0][0]}', frame)
+                    print('CODE SPOTTED:', corners, '-', ids[0][0])
+                    cv2.imshow(f'CODE SPOTTED: {ids[0][0]}', frame)
                 else:
                     cv2.imshow('aruco detector', frame)
             if cv2.waitKey(1) == 27:
@@ -154,4 +155,5 @@ if __name__ == "__main__":
     drone = FlyerDrone(IP, DRONE1_PORT, DRONE1_VIDEO_PORT, DRONE1_HEIGHT, Car(IP, 8001), False)
     drone.takeoff()
     time.sleep(5)
-    drone.fly_around()
+    drone.fly_around(6)
+    drone.return_to_base()
