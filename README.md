@@ -1,40 +1,27 @@
-# Drone Project
+# Программа для дронов
 
-This project is focused on developing a drone system that includes both hardware and software components. The main objectives are to create a reliable, efficient, and user-friendly drone that can be used for various applications such as aerial photography, surveillance, and delivery services.
+## Функции
 
-## Installation
+- Класс FlyerDrone с функциями облёта территории, взлёта, возвращения на базу и сканирования штрих кодов
+- Класс Car для автоматического управления машиной
+- И так далее...
 
-1. Clone the repository using Git
-    ```bash
-    git clone https://github.com/artan321123/cyber-drom-stuff.git
-    ```
+## Установка
 
-2. Install required libraries
-    ```bash
-    pip install -r requirements.txt
-    ```
+1. Скопировать на свой компьютер
 
-3. Launch **drone-controller.py**:
-    ```bash
-    python3 drone-controller.py
-    ```
+	```bash
+	git clone https://github.com/artand321123/cyber-drom-stuff.git
+	```
 
-## Features
+2. Установить необходимые библиотеки
 
-- Autonomous flight capabilities
-- Real-time video streaming
-- GPS navigation
-- Obstacle detection and avoidance
-- User-friendly control interface
+	```bash
+	pip install -r requirements.txt
+	```
+3. Дописать программу до конца
 
-## Getting Started
+4. Запустить **drone-controller.py**
 
-To get started with this project, please refer to the installation instructions and user guide provided in the documentation.
 
-## Contributing
-
-We welcome contributions from the community. Please read our contributing guidelines before submitting any changes.
-
-## License
-
-This project is not licensed! Don't read the LICENSE file for more details.
+ > Сделано Артамоновым Андреем за 1 ночь
