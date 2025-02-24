@@ -52,7 +52,15 @@ class FlyerDrone(P):
     """
     Класс дрона-разведчика
     """
-    def __init__(self, ip: str, port: int, camera_port: int, height: float, car: Car, side: bool):
+    def __init__(
+            self, ip: str,
+            port: int,
+            camera_port: int,
+            height: float,
+            car: Car,
+            side: bool,
+            base: tuple
+        ):
         """
         Конструктор
 
@@ -73,7 +81,8 @@ class FlyerDrone(P):
         self.height = height
         self.car = car
         self.side = side
-        self.base = (self.position[0], self.position[1], 0, 0)
+        self.base = base
+        print(self.base)
         self.aruco_detector_thread = Thread(target=self.aruco_detector)
         self.aruco_detector_thread.start()
 
@@ -93,36 +102,23 @@ class FlyerDrone(P):
         Возврат на базу и посадка
         """
         print("RETURNING TO BASE")
-        self.goto(*self.base)
-        time.sleep(5)
+        self.goto(*self.base, self.height, 0)
+        time.sleep(10)
         self.land()
         time.sleep(3)
         self.disarm()
         print("LANDED")
-    
-    def fly_around(self, count = -1):
-        """
-        Полёт зигзагом по полю для поиска грузов
-        """
-        print("FLYING AROUND")
-        edge_x = int(self.position[0])
 
-        while count != 0:
-            self.goto(-edge_x, self.position[1], self.height, 0)
-            print("GOING TO", -edge_x, self.position[1])
-            while round(self.position[0]) != -edge_x:
-                time.sleep(1)
-            print("ARRIVED")
-            self.goto(
-                -edge_x,
-                self.position[1] + (DRONE_STEP if self.side == True else -DRONE_STEP),
-                self.height,
-                0
-            )
-            print("GOING TO", -edge_x, self.position[1] + (DRONE_STEP if self.side == True else -DRONE_STEP))
-            time.sleep(5)
-            edge_x = -edge_x
-            count -= 1
+    def search_targets(self, targets: list[tuple]):
+        """
+        Поиск грузов
+        """
+        print("SEARCHING FOR TARGETS")
+        for target in targets:
+            print(f"TARGET {targets.index(target)}/{len(targets)}:", target)
+            self.goto(*target, self.height, 0)
+            time.sleep(10)
+        print("TARGETS SEARCHED")
 
     def aruco_detector(self):
         """
@@ -152,8 +148,18 @@ class FlyerDrone(P):
         cv2.destroyAllWindows()
 
 if __name__ == "__main__":
-    drone = FlyerDrone(IP, DRONE1_PORT, DRONE1_VIDEO_PORT, DRONE1_HEIGHT, Car(IP, 8001), False)
+    drone = FlyerDrone(IP, DRONE1_PORT, DRONE1_VIDEO_PORT, DRONE1_HEIGHT, Car(IP, 8001), True, (-3.92, -2.14))
     drone.takeoff()
     time.sleep(5)
-    drone.fly_around(6)
+    drone.search_targets([
+        (-4, 4),
+        (4, 3),
+        (-4, 2),
+        (4, 1),
+        (-4, 0),
+        (4, -1),
+        (-4, -2),
+        (4, -3),
+        (-4, -4)
+    ])
     drone.return_to_base()
