@@ -1,0 +1,11 @@
+future==1.0.0
+lxml==5.3.1
+markdown-it-py==3.0.0
+mdurl==0.1.2
+numpy==2.2.3
+opencv-python==4.11.0.86
+pion @ git+https://github.com/OnisOris/pion@7a2a3fce7e97cd1f083106539778e080365ff300
+Pygments==2.19.1
+pymavlink==2.4.42
+pyzbar==0.1.9
+rich==13.9.4
